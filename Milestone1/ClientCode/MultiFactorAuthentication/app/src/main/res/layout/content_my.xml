@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!--<EditText-->
+            <!--android:id="@+id/edit_message"-->
+            <!--android:hint="@string/edit_message"/>-->
+        <Button
+            android:text="@string/button_password"
+            android:onClick="sendMessage"/>
+
+
+        <Button
+            android:text="@string/button_sms" />
+
+        <Button
+            android:text="@string/button_facial" />
+
+
+        <Button
+            android:text="@string/button_voice" />
+
+
+
+
+    </TableLayout>
+
+
+
+
+</LinearLayout>
