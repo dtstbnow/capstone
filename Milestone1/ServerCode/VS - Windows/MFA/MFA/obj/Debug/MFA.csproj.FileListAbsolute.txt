@@ -1,0 +1,7 @@
+c:\users\joseph\documents\visual studio 2015\Projects\MFA\MFA\bin\Debug\MFA.exe.config
+c:\users\joseph\documents\visual studio 2015\Projects\MFA\MFA\obj\Debug\MFA.csprojResolveAssemblyReference.cache
+c:\users\joseph\documents\visual studio 2015\Projects\MFA\MFA\bin\Debug\MFA.exe
+c:\users\joseph\documents\visual studio 2015\Projects\MFA\MFA\bin\Debug\MFA.pdb
+c:\users\joseph\documents\visual studio 2015\Projects\MFA\MFA\obj\Debug\MFA.exe
+c:\users\joseph\documents\visual studio 2015\Projects\MFA\MFA\obj\Debug\MFA.pdb
+C:\Users\Joseph\documents\visual studio 2015\Projects\MFA\MFA\bin\Debug\MySql.Data.dll
