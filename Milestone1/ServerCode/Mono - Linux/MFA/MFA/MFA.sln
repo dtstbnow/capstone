@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFA", "MFA\MFA.csproj", "{51BD7B29-D4EB-45BC-8A10-C49C2AF5459D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFA", "MFA.csproj", "{51BD7B29-D4EB-45BC-8A10-C49C2AF5459D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +13,5 @@ Global
 		{51BD7B29-D4EB-45BC-8A10-C49C2AF5459D}.Debug|x86.Build.0 = Debug|x86
 		{51BD7B29-D4EB-45BC-8A10-C49C2AF5459D}.Release|x86.ActiveCfg = Release|x86
 		{51BD7B29-D4EB-45BC-8A10-C49C2AF5459D}.Release|x86.Build.0 = Release|x86
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = MFA\MFA.csproj
 	EndGlobalSection
 EndGlobal

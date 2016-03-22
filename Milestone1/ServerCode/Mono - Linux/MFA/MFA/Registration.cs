@@ -1,13 +1,14 @@
 using System;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Configuration;
 
 namespace MFA
 {
 	internal class Registration
 	{
 		// MySql variables;
-		private string connectionString;
+		private String connectionString;
 
 		// user data variables
 		private string username;
@@ -15,15 +16,15 @@ namespace MFA
 		private string password;
 		private string smsAddress;
 		private bool smsCapable;
-		private int facialData;
-		private int vocalData;
+		private string facialData;
+		private string vocalData;
 
 		#pragma warning disable 0649, 0169
 		private int userId;
 		private int deviceId;
 		private int userDeviceId;
-		private int facialDataId;
-		private int vocalDataId;
+		private string facialDataId;
+		private string vocalDataId;
 		#pragma warning restore 0649, 0169
 
 		/// <summary>
@@ -51,8 +52,8 @@ namespace MFA
 				smsCapable = false;
 			}
 
-			facialData = Convert.ToInt32(verificationData[3]);
-			vocalData = Convert.ToInt32(verificationData[4]);
+			facialData = verificationData[3];
+			vocalData = verificationData[4];
 		}
 
 		/// <summary>
@@ -69,64 +70,66 @@ namespace MFA
 					try
 					{
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand(@"INSERT INTO MultiAuth.users (username, password) 
-                            SELECT * FROM (SELECT ?username, ?password) as t 
-                            WHERE NOT EXISTS (SELECT username FROM MultiAuth.users WHERE username=?username)", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertuser", con2, trans))
 						{
-							cmd.Parameters.AddWithValue("?username", username);
-							cmd.Parameters.AddWithValue("?password", password);
+							cmd.CommandType = CommandType.StoredProcedure;
+
+							cmd.Parameters.AddWithValue("paramUsername", username);
+							cmd.Parameters.AddWithValue("paramPassword", password);
 
 							cmd.ExecuteNonQuery();
 							cmd.Parameters.Clear(); // Clear params
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand(@"INSERT INTO MultiAuth.devices (macAddress, smsCapable, smsAddress) 
-                            SELECT * FROM (SELECT ?macAddress, ?smsCapable, ?smsAddress) as t 
-                            WHERE NOT EXISTS (SELECT macAddress FROM MultiAuth.devices WHERE macAddress=?macAddress)", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertdevice", con2, trans))
 						{
-							cmd.Parameters.AddWithValue("?macAddress", macAddress);
-							cmd.Parameters.AddWithValue("?smsCapable", smsCapable);
-							cmd.Parameters.AddWithValue("?smsAddress", smsAddress);
+							cmd.CommandType = CommandType.StoredProcedure;
+
+							cmd.Parameters.AddWithValue("paramMacAddress", macAddress);
+							cmd.Parameters.AddWithValue("paramSmsCapable", smsCapable);
+							cmd.Parameters.AddWithValue("paramSmsAddress", smsAddress);
 
 							cmd.ExecuteNonQuery();
 							cmd.Parameters.Clear(); // Clear params
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand(@"INSERT INTO MultiAuth.userDevices (userId, deviceId) 
-                            SELECT users.userId, devices.deviceId FROM MultiAuth.users, MultiAuth.devices 
-                            WHERE NOT EXISTS (SELECT userId, deviceId FROM MultiAuth.userDevices WHERE userId=?userId AND 
-                            deviceId=?deviceId)", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertuserdevices", con2, trans))
 						{
-							cmd.Parameters.AddWithValue("?userId", userId);
-							cmd.Parameters.AddWithValue("?deviceId", deviceId);
-							cmd.Parameters.AddWithValue("?userDeviceId", userDeviceId);
+							cmd.CommandType = CommandType.StoredProcedure;
+
+							cmd.Parameters.AddWithValue("paramUserId", userId);
+							cmd.Parameters.AddWithValue("paramDeviceId", deviceId);
 
 							cmd.ExecuteNonQuery();
 							cmd.Parameters.Clear(); // Clear params
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand(@"INSERT INTO MultiAuth.facialData (userId, facialData) 
-                            SELECT users.userId, ?facialData FROM MultiAuth.users 
-                            WHERE NOT EXISTS (SELECT facialData FROM MultiAuth.facialData WHERE facialData=?facialData)", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertfacialdata", con2, trans))
 						{
-							cmd.Parameters.AddWithValue("?facialData", facialData);
+							cmd.CommandType = CommandType.StoredProcedure;
+
+							cmd.Parameters.AddWithValue("paramUserId", userId);
+							cmd.Parameters.AddWithValue("paramFacialData", facialData);
 
 							cmd.ExecuteNonQuery();
 							cmd.Parameters.Clear(); // Clear params
+
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand(@"INSERT INTO MultiAuth.vocalData (userId, vocalData) 
-                            SELECT users.userId, ?vocalData FROM MultiAuth.users 
-                            WHERE NOT EXISTS (SELECT vocalData FROM MultiAuth.vocalData WHERE vocalData=?vocalData)", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertvocaldata", con2, trans))
 						{
-							cmd.Parameters.AddWithValue("?vocalData", vocalData);
+							cmd.CommandType = CommandType.StoredProcedure;
+
+							cmd.Parameters.AddWithValue("paramUserId", userId);
+							cmd.Parameters.AddWithValue("paramVocalData", vocalData);
 
 							cmd.ExecuteNonQuery();
 							cmd.Parameters.Clear(); // Clear params
+
 						}
 						trans.Commit();
 					}
@@ -145,34 +148,7 @@ namespace MFA
 		/// </summary>
 		public void InitializeDB()
 		{
-			string server = "localhost";
-			string database = "MultiAuth";
-			string uid = "root";
-			string password = "!!capstone2016heckyes!!";
-
-			connectionString = "Server=" + server + ";" + "Database=" +
-				database + ";" + "Uid=" + uid + ";" + "Password=" + password +
-					";Allow User Variables=True";
-		}
-
-		/// <summary>
-		/// Test whether the MYSQL connection is open
-		/// </summary>
-		private void TestConnection()
-		{
-			using (var con = new MySqlConnection(connectionString))
-			{
-				con.Open();
-				var temp = con.State.ToString();
-				if (con.State == ConnectionState.Open && temp == "Open") // connection is open
-				{
-					Console.WriteLine("Connection is working.");
-				}
-				else // connection is closed - check connection string for errors
-				{
-					Console.WriteLine("Connection closed. Check connection string");
-				}
-			}
+			connectionString = ConfigurationManager.ConnectionStrings ["MySQL"].ConnectionString;
 		}
 	}
 }

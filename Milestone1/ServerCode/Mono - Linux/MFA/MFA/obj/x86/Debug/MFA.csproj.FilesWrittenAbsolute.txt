@@ -1,0 +1,6 @@
+/home/joseph/Desktop/MFA/MFA/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/joseph/Desktop/MFA/MFA/bin/Debug/MFA.exe.config
+/home/joseph/Desktop/MFA/MFA/bin/Debug/MFA.exe.mdb
+/home/joseph/Desktop/MFA/MFA/bin/Debug/MFA.exe
+/home/joseph/Desktop/MFA/MFA/obj/x86/Debug/MFA.exe
+/home/joseph/Desktop/MFA/MFA/obj/x86/Debug/MFA.exe.mdb
