@@ -2,9 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="MFA/Registration.cs">
     <Files>
-      <File FileName="MFA/Registration.cs" Line="50" Column="4" />
-      <File FileName="MFA/Authentication.cs" Line="25" Column="15" />
+      <File FileName="MFA/Registration.cs" Line="3" Column="19" />
+      <File FileName="MFA/Authentication.cs" Line="1" Column="1" />
       <File FileName="MFA/Launcher.cs" Line="1" Column="1" />
+      <File FileName="MFA/app.config" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
