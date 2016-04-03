@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,6 +64,8 @@ public class MessageSendActivity extends AppCompatActivity implements HttpReques
         JSONObject postBody = new JSONObject();
         JSONObject putBody = new JSONObject();
         //Add parameters to the json objects
+        TextView textView = (TextView) findViewById(R.id.result);
+        textView.setText(json.toString());
 
         //Make the requests
 //        mGetRequest = HttpRequest.get(this, "https://141.225.8.149");

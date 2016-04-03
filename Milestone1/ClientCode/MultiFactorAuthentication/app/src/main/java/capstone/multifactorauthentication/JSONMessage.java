@@ -8,6 +8,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -41,8 +43,19 @@ public class JSONMessage {
     }
 
     public void AddFile(String name, File file){
+        byte [] b;
         try{
-            content.accumulate(name, file);
+
+//            byte[] b =  IOUtils.toByteArray(file);
+            try{
+                b = FileUtils.readFileToByteArray(file);
+            }
+            catch(java.io.IOException e){
+                return;
+            }
+
+
+            content.accumulate(name, b);
             Log.v("success", content.toString());
         }
         catch(org.json.JSONException e)

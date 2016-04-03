@@ -61,6 +61,18 @@ public class FaceActivity extends AppCompatActivity{
         }
 
 
+        @Override
+        public void onSaveInstanceState(Bundle savedInstanceState) {
+            super.onSaveInstanceState(savedInstanceState);
+            savedInstanceState.putString("name", name);
+        }
+
+        @Override
+        public void onRestoreInstanceState(Bundle savedInstanceState) {
+            super.onRestoreInstanceState(savedInstanceState);
+            name = savedInstanceState.getString("name");
+        }
+
         private final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
         private Uri fileUri;
         @Override

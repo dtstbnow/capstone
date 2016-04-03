@@ -12,4 +12,9 @@
     tools:context="capstone.multifactorauthentication.MessageSendActivity"
     tools:showIn="@layout/activity_message_send">
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/result"/>
 </RelativeLayout>

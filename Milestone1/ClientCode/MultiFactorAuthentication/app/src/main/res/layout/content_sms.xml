@@ -13,8 +13,8 @@
     tools:showIn="@layout/activity_sms">
 
     <EditText
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:id="@+id/sms"
         android:hint="@string/enter_sms"/>
 
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit"
-        android:layout_toRightOf="@+id/password"
+        android:layout_toRightOf="@id/sms"
         android:onClick="submit"/>
 
 </RelativeLayout>
