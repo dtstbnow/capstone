@@ -3,64 +3,87 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
 
-namespace MFA
+namespace Registration
 {
 	internal class Registration
 	{
 		// MySql variables;
-		private String connectionString;
+		private static String connectionString;
 
 		// user data variables
-		private string username;
-		private string macAddress;
-		private string password;
-		private string smsAddress;
-		private bool smsCapable;
-		private string facialData;
-		private string vocalData;
+		private static string username;
+		private static string macAddress;
+		private static string password;
+
+		private static string verificationData;
+		private static string smsAddress;
+		private static bool smsCapable;
+		private static string facialData;
+		private static string vocalData;
 
 		#pragma warning disable 0649, 0169
-		private int userId;
-		private int deviceId;
-		private int userDeviceId;
-		private string facialDataId;
-		private string vocalDataId;
+		private static int userId;
+		private static int deviceId;
+		private static int userDeviceId;
+		private static string facialDataId;
+		private static string vocalDataId;
 		#pragma warning restore 0649, 0169
 
 		/// <summary>
-		/// Registration constructor
-		/// </summary>
+		/// The web service will parse the JSON object and pass MFA.exe one argument, the userData string.
 		/// 
-		/// <param name="verificationData">
-		/// string array containing user data
-		/// layout: [password,smsAddress,smsCapable,facialData,vocalData]
-		/// </param>
-		public Registration(string username, string macAddress, string[] verificationData)
+		/// verificationData layout
+		/// password//smsAddress//smsCapable//facialData//voiceData
+		/// 
+		/// </summary>
+		/// <param name="args">username macAddress verificationType verificationData</param>
+		static void Main(string[] args)
 		{
-			this.username = username;
-			this.macAddress = macAddress;
+			username = args [0];
+			macAddress = args [1];
+			verificationData = args[2];
 
-			password = verificationData[0];
-			smsAddress = verificationData[1];
+			Parse(verificationData);
 
-			if (verificationData[2].Equals("1"))
-			{
+			InsertRecord();
+		}
+
+		/// <summary>
+		/// Split the string and assign the data to their respected variables.
+		/// 
+		/// data String layout:
+		/// password//smsAddress//smsCapable//facialData//vocalData
+		/// 
+		/// </summary>
+		/// <param name="data">string array that holds user data seperated by a delimiter ("//")</param>
+		/// <returns>returns userData array, ready to be passed to registration or authentication class</returns>
+		private static void Parse(string data)
+		{
+			string[] userData = data.Split(new string[] { "//" }, System.StringSplitOptions.None);
+
+			password = userData[0];
+			smsAddress = userData[1];
+
+			if (userData[2].Equals("1"))
+			{ 
 				smsCapable = true;
 			}
-			else if (verificationData[2].Equals("0"))
+			else if (userData[2].Equals("0"))
 			{
 				smsCapable = false;
 			}
 
-			facialData = verificationData[3];
-			vocalData = verificationData[4];
+			facialData = userData[3];
+			vocalData = userData [4];
 		}
 
 		/// <summary>
 		/// Insert records into MySQL tables
 		/// </summary>
-		public void InsertRecord()
+		private static void InsertRecord()
 		{
+			InitializeDB(); // Initialize the database
+
 			using (var con2 = new MySqlConnection(connectionString)) // dispose of connection when finished
 			{
 				con2.Open(); // open a connection
@@ -95,7 +118,7 @@ namespace MFA
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand("insertuserdevices", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertuserdevice", con2, trans))
 						{
 							cmd.CommandType = CommandType.StoredProcedure;
 
@@ -138,7 +161,6 @@ namespace MFA
 						Console.WriteLine(ex.ToString());
 						trans.Rollback();
 					}
-
 				}
 			}
 		}
@@ -146,7 +168,7 @@ namespace MFA
 		/// <summary>
 		/// Initialization DB connectionString
 		/// </summary>
-		public void InitializeDB()
+		private static void InitializeDB()
 		{
 			connectionString = ConfigurationManager.ConnectionStrings ["MySQL"].ConnectionString;
 		}

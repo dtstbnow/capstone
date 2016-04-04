@@ -3,13 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{51BD7B29-D4EB-45BC-8A10-C49C2AF5459D}</ProjectGuid>
+    <ProjectGuid>{78D2EE00-4431-4528-B5B5-3B5A7C7F003F}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>MFA</RootNamespace>
-    <AssemblyName>MFA</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Registration</RootNamespace>
+    <AssemblyName>Registration</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,17 +33,15 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="MySql.Data">
-      <HintPath>bin\Debug\MySql.Data.dll</HintPath>
+      <HintPath>ref\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Registration.cs" />
-    <Compile Include="Authentication.cs" />
-    <Compile Include="Launcher.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

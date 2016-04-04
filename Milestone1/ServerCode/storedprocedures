@@ -1,0 +1,14 @@
+delimiter //
+CREATE PROCEDURE insertdevice (IN paramMacAddress TEXT, IN paramSmsCapable BIT(1), IN paramSmsAddress TEXT) BEGIN INSERT INTO devices (macAddress, smsCapable, smsAddress) VALUES (paramMacAddress, paramSmsCapable, paramSmsAddress); END//
+
+delimiter //
+CREATE PROCEDURE insertuser (IN paramUsername TEXT, IN paramPassword TEXT) BEGIN INSERT INTO users (username, password) VALUES (paramUsername, paramPassword); END//
+
+delimiter //
+CREATE PROCEDURE insertvocaldata (IN paramUserId INT, IN paramVocalData BLOB) BEGIN INSERT INTO vocalData (userId, vocalData) VALUES (paramUserId, paramVocalData); END//
+
+delimiter //
+CREATE PROCEDURE insertfacialdata (IN paramUserId INT, IN paramFacialData BLOB) BEGIN INSERT INTO facialData (userId, facialData) VALUES (paramUserId, paramFacialData); END//
+
+delimiter //
+CREATE PROCEDURE insertuserdevice (IN paramUserId INT, IN paramDeviceId INT) BEGIN INSERT INTO userDevices (userId, deviceId) VALUES (paramUserId, paramDeviceId); END//
