@@ -59,7 +59,7 @@ namespace Registration
 		/// <returns>returns userData array, ready to be passed to registration or authentication class</returns>
 		private static void Parse(string data)
 		{
-			string[] userData = data.Split(new string[] { "//" }, System.StringSplitOptions.None);
+			string[] userData = data.Split(new string[] {"//"}, System.StringSplitOptions.None);
 
 			password = userData[0];
 			smsAddress = userData[1];
@@ -82,7 +82,10 @@ namespace Registration
 		/// </summary>
 		private static void InsertRecord()
 		{
-			InitializeDB(); // Initialize the database
+			//InitializeDB ();
+			//connectionString = ConfigurationManager.ConnectionStrings ["MySQL"].ConnectionString;
+
+			connectionString = "SERVER=localhost; DATABASE=MultiAuth; UID=root; PASSWORD=!!capstone2016heckyes!!;Allow User Variables=True";
 
 			using (var con2 = new MySqlConnection(connectionString)) // dispose of connection when finished
 			{
@@ -101,6 +104,7 @@ namespace Registration
 							cmd.Parameters.AddWithValue("paramPassword", password);
 
 							cmd.ExecuteNonQuery();
+							userId = (int)cmd.LastInsertedId;
 							cmd.Parameters.Clear(); // Clear params
 						}
 
@@ -114,6 +118,7 @@ namespace Registration
 							cmd.Parameters.AddWithValue("paramSmsAddress", smsAddress);
 
 							cmd.ExecuteNonQuery();
+							deviceId = (int)cmd.LastInsertedId;
 							cmd.Parameters.Clear(); // Clear params
 						}
 
@@ -165,12 +170,12 @@ namespace Registration
 			}
 		}
 
-		/// <summary>
-		/// Initialization DB connectionString
-		/// </summary>
-		private static void InitializeDB()
-		{
-			connectionString = ConfigurationManager.ConnectionStrings ["MySQL"].ConnectionString;
-		}
+//		/// <summary>
+//		/// Initialization DB connectionString
+//		/// </summary>
+//		private static void InitializeDB()
+//		{
+//			connectionString = ConfigurationManager.ConnectionStrings ["MySQL"].ConnectionString;
+//		}
 	}
 }
