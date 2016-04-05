@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">MultiFactorAuthentication</string>
+    <string name="action_settings">Test String</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+    <string name="button_password">Password</string>
+    <string name="button_facial">Facial Recognition</string>
+    <string name="button_voice">Voice Recognition</string>
+    <string name="button_sms">SMS</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="title_activity_password">PasswordActivity</string>
+    <string name="title_activity_sms">SMSActivity</string>
+    <string name="title_activity_face">FaceActivity</string>
+    <string name="title_activity_voice">VoiceActivity</string>
+    <string name="enter_password">Enter Your Password</string>
+    <string name="enter_sms">Enter Your SMS Code</string>
+    <string name="register_sms">Enter the phone number for your sms device.</string>
+    <string name="result">null</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="submit">Submit</string>
+    <string name="register">Register</string>
+    <string name="title_activity_message_send">MessageSendActivity</string>
+    <string name="title_activity_verification">VerificationActivity</string>
+    <string name="enter_name">Enter Your Name</string>
+    <string name="title_activity_smsregister">SMSRegister</string>
+
+</resources>
