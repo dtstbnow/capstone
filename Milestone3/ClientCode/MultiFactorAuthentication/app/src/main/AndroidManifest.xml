@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="capstone.multifactorauthentication">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DisplayMessageActivity"
+            android:label="@string/title_activity_display_message"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".PasswordActivity"
+            android:label="@string/title_activity_password"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SMSActivity"
+            android:label="@string/title_activity_sms"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".FaceActivity"
+            android:label="@string/title_activity_face"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".VoiceActivity"
+            android:label="@string/title_activity_voice"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".MessageSendActivity"
+            android:label="@string/title_activity_message_send"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".VerificationActivity"
+            android:label="@string/title_activity_verification"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="capstone.multifactorauthentication.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SMSRegister"
+            android:label="@string/title_activity_smsregister"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>
