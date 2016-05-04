@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:paddingBottom="@dimen/activity_vertical_margin"-->
+<!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
+<!--android:paddingRight="@dimen/activity_horizontal_margin"-->
+<!--android:paddingTop="@dimen/activity_vertical_margin"-->
+<!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--tools:context="capstone.multifactorauthentication.MainActivity"-->
+<!--tools:showIn="@layout/activity_main">-->
+
+<!--<TextView-->
+<!--android:layout_width="wrap_content"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:text="Hello World!" />-->
+<!--</RelativeLayout>-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:orientation="vertical"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+tools:showIn="@layout/activity_main"
+    >
+
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:id="@+id/name"
+        android:hint="@string/enter_name"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:textColor="#F00"
+        android:id="@+id/error"/>
+
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:id="@+id/ip"
+        android:hint="Target IP Adress"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="28dp"
+        android:text="(Development feature, will not be in final product)"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+         >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register"
+            android:layout_marginLeft="50dp"
+            android:id="@+id/register"
+            android:onClick="register"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/register"
+            android:onClick="submit"/>
+        </LinearLayout>
+
+
+
+    <!--<TableLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:showIn="@layout/activity_main">-->
+
+
+        <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/edit_message"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:hint="@string/edit_message"/>&ndash;&gt;-->
+        <!--<Button-->
+            <!--android:text="@string/button_password"-->
+            <!--android:onClick="renderPassword"/>-->
+
+
+        <!--<Button-->
+            <!--android:text="@string/button_sms"-->
+            <!--android:onClick="renderSMS"/>-->
+
+        <!--<Button-->
+            <!--android:text="@string/button_facial"-->
+            <!--android:onClick="renderFacial"/>-->
+
+
+        <!--<Button-->
+            <!--android:text="@string/button_voice"-->
+            <!--android:onClick="renderVoice"/>-->
+
+
+
+
+    <!--</TableLayout>-->
+
+
+
+
+</LinearLayout>
