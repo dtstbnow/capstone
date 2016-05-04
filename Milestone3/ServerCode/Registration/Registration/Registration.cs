@@ -68,7 +68,7 @@ namespace Registration
 			{ 
 				smsCapable = true;
 			}
-			else if (userData[2].Equals("0"))
+			else
 			{
 				smsCapable = false;
 			}
@@ -85,45 +85,63 @@ namespace Registration
 			//InitializeDB ();
 			//connectionString = ConfigurationManager.ConnectionStrings ["MySQL"].ConnectionString;
 
-			connectionString = "SERVER=localhost; DATABASE=MultiAuth; UID=root; PASSWORD=!!capstone2016heckyes!!;Allow User Variables=True";
+			connectionString = "SERVER=localhost; DATABASE=MultiAuth; UID=root; PASSWORD=!!capstone2016heckyes!!; Allow User Variables=True";
 
 			using (var con2 = new MySqlConnection(connectionString)) // dispose of connection when finished
 			{
 				con2.Open(); // open a connection
 
-				using (MySqlTransaction trans = con2.BeginTransaction()) // begin SQL Transaction
-				{
-					try
-					{
+				using (MySqlTransaction trans = con2.BeginTransaction()) { // begin SQL Transaction
+					try {
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand("insertuser", con2, trans))
-						{
+						using (MySqlCommand cmd = new MySqlCommand("insertuser", con2, trans)) {
 							cmd.CommandType = CommandType.StoredProcedure;
 
-							cmd.Parameters.AddWithValue("paramUsername", username);
-							cmd.Parameters.AddWithValue("paramPassword", password);
+							cmd.Parameters.AddWithValue ("paramUsername", username);
+							cmd.Parameters.AddWithValue ("paramPassword", password);
 
-							cmd.ExecuteNonQuery();
-							userId = (int)cmd.LastInsertedId;
-							cmd.Parameters.Clear(); // Clear params
+							//cmd.ExecuteNonQuery ();
+							using (MySqlDataReader reader = cmd.ExecuteReader()) {
+								while(reader.Read()) {
+									userId = Convert.ToInt32(reader["LAST_INSERT_ID()"].ToString());
+								}
+							}
+							//userId = (int)cmd.ExecuteScalar();
+							//userId = (int)cmd.LastInsertedId;
+							//long temp = cmd.LastInsertedId;
+							cmd.Parameters.Clear (); // Clear params
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand("insertdevice", con2, trans))
-						{
+						using (MySqlCommand cmd = new MySqlCommand("insertdevice", con2, trans)) {
 							cmd.CommandType = CommandType.StoredProcedure;
 
-							cmd.Parameters.AddWithValue("paramMacAddress", macAddress);
-							cmd.Parameters.AddWithValue("paramSmsCapable", smsCapable);
-							cmd.Parameters.AddWithValue("paramSmsAddress", smsAddress);
+							cmd.Parameters.AddWithValue ("paramMacAddress", macAddress);
+							cmd.Parameters.AddWithValue ("paramSmsCapable", smsCapable);
+							cmd.Parameters.AddWithValue ("paramSmsAddress", smsAddress);
 
-							cmd.ExecuteNonQuery();
-							deviceId = (int)cmd.LastInsertedId;
-							cmd.Parameters.Clear(); // Clear params
+							//cmd.ExecuteNonQuery ();
+							using (MySqlDataReader reader = cmd.ExecuteReader()) {
+								while(reader.Read()) {
+									deviceId = Convert.ToInt32(reader["LAST_INSERT_ID()"].ToString());
+								}
+							}
+							//deviceId = (int)cmd.LastInsertedId;
+							cmd.Parameters.Clear (); // Clear params
 						}
+						trans.Commit();
+					} catch (Exception ex) {
+						Console.WriteLine (ex.Message);
+						trans.Rollback();
+					}
+					trans.Dispose ();
+				}
+
+				using (MySqlTransaction trans2 = con2.BeginTransaction()) {
+					try {
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand("insertuserdevice", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertuserdevice", con2, trans2))
 						{
 							cmd.CommandType = CommandType.StoredProcedure;
 
@@ -135,7 +153,7 @@ namespace Registration
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand("insertfacialdata", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertfacialdata", con2, trans2))
 						{
 							cmd.CommandType = CommandType.StoredProcedure;
 
@@ -148,7 +166,7 @@ namespace Registration
 						}
 
 						//command to execute query
-						using (MySqlCommand cmd = new MySqlCommand("insertvocaldata", con2, trans))
+						using (MySqlCommand cmd = new MySqlCommand("insertvocaldata", con2, trans2))
 						{
 							cmd.CommandType = CommandType.StoredProcedure;
 
@@ -159,12 +177,12 @@ namespace Registration
 							cmd.Parameters.Clear(); // Clear params
 
 						}
-						trans.Commit();
+						trans2.Commit();
 					}
 					catch(Exception ex)
 					{
 						Console.WriteLine(ex.ToString());
-						trans.Rollback();
+						trans2.Rollback();
 					}
 				}
 			}

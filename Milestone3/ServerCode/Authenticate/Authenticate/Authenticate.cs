@@ -2,6 +2,7 @@ using System;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using System.IO;
 
 namespace Authenticate
 {
@@ -13,16 +14,12 @@ namespace Authenticate
 		// user data
 		private static string username;
 		private static string macAddress;
-		private static string password;
+		//private static string password;
 
 		private static string authenticationType;
-		private static string authenticationData;
 
-		private static string smsAddress;
-		private static bool smsCapable;
-
-		private static string facialData;
-		private static string vocalData;
+		//private static string facialData;
+		//private static string vocalData;
 
 		/// <summary>
 		/// The entry point of the program, where the program control starts and ends.
@@ -31,60 +28,62 @@ namespace Authenticate
 		/// <returns>Returns 0 on failure, 1 on success, -1 for unrecognized authentication type</returns>
 		static int Main (string[] args)
 		{
-			authenticationType = args [0];
-			username = args [1];
-			macAddress = args [2];
+			username = args [0];
+			macAddress = args [1];
 
-			// Authenticate with given type
-			if (authenticationType.Equals ("password"))
-			{ // Password authentication
-				password = args [3];
-				if (TestPassword (password))
-				{
-					//Console.Write ("SUCCESS!");
-					return 1;
-				}
-				else
-				{
-					//Console.Write ("FAILURE!");
-					return 0;
-				}
-			}
-			else if (authenticationType.Equals ("vocal"))
-			{ // Vocal authentication
-				vocalData = args [3];
-				// test vocaldata
-				if (TestVocal (vocalData))
-				{
-					//Console.Write ("SUCCESS!");
-					return 1;
-				}
-				else
-				{
-					//Console.Write ("FAILURE!");
-					return 0;
-				}
+			//Get first authentication type
+			authenticationType = GetFirstAuthType ();
 
+			//do authentication
+			bool passed = false;
+			switch (authenticationType) {
+			case "pwd":
+				passed = TestPassword (args [2]);
+				break;
+			case "face":
+				passed = TestFacial (args [2]);
+				break;
+			case "voice":
+				passed = TestVocal (args [2]);
+				break;
+			case "sms":
+				passed = SMS (args [2]);
+				break;
 			}
-			else if (authenticationType.Equals ("facial"))
-			{ // Facial authentication
-				facialData = args [3];
-				// test facialdata
-				if (TestFacial (facialData))
-				{
-					//Console.Write ("SUCCESS!");
-					return 1;
-				}
-				else
-				{
-					//Console.Write ("FAILURE!");
-					return 0;
-				}
+
+			if (!passed) {
+				//WriteResult ("0");
+				return 0;
 			}
-			else
-			{ // Unrecognized authentication type
-				return -1;
+
+			//Get second authentication type
+			authenticationType = GetSecondAuthType ();
+
+			//Do second authentication
+			passed = false;
+			switch (authenticationType) {
+			case "pwd":
+				passed = TestPassword (args [3]);
+				break;
+			case "face":
+				passed = TestFacial (args [3]);
+				break;
+			case "voice":
+				passed = TestVocal (args [3]);
+				break;
+			case "sms":
+				passed = SMS (args [3]);
+				break;
 			}
+
+			if (!passed) {
+				//WriteResult ("0");
+				return 0;
+				//return;
+			}
+
+			//WriteResult ("1");
+			return 1;
 		}
 
 		/// <summary>
@@ -95,7 +94,7 @@ namespace Authenticate
 		private static bool TestPassword(String pass)
 		{
 			// connection string data
-			connectionString = "SERVER=localhost; DATABASE=MultiAuth; UID=root; PASSWORD=!!capstone2016heckyes!!;Allow User Variables=True";
+			connectionString = "SERVER=localhost; DATABASE=MultiAuth; UID=root; PASSWORD=!!capstone2016heckyes!!; Allow User Variables=True";
 			string userPassword = ""; // user's stored password
 
 			using (var con = new MySqlConnection(connectionString))
@@ -117,14 +116,7 @@ namespace Authenticate
 			}
 
 			// Return true on match, false otherwise
-			if(password.Equals(userPassword))
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return pass.Equals (userPassword);
 
 		}
 
@@ -148,5 +140,89 @@ namespace Authenticate
 			return false;
 		}
 
+		private static bool SMS(String smsCode)
+		{
+			//retrieve SMS Code from DB
+			String storedCode = "";
+			String connectionString = "SERVER=localhost; DATABASE=MultiAuth; UID=root; PASSWORD=!!capstone2016heckyes!!; Allow User Variables=True";
+
+			using (var con2 = new MySqlConnection(connectionString)) { // dispose of connection when finished
+				con2.Open (); // open a connection
+				using (MySqlTransaction trans2 = con2.BeginTransaction()) {
+					try {
+
+						//command to execute query
+						using (MySqlCommand cmd = new MySqlCommand("getsmscode", con2, trans2))
+						{
+							cmd.CommandType = CommandType.StoredProcedure;
+
+							cmd.Parameters.AddWithValue("paramUserName", username);
+							cmd.Parameters.AddWithValue("paramMacAddress", macAddress);
+
+							using (MySqlDataReader reader = cmd.ExecuteReader()) {
+								while(reader.Read()) {
+									storedCode = reader["code"].ToString();
+								}
+							}
+							cmd.Parameters.Clear(); // Clear params
+						}
+						trans2.Commit();
+					}
+					catch(Exception ex)
+					{
+						Console.WriteLine(ex.ToString());
+						trans2.Rollback();
+					}
+				}
+			}
+			return smsCode.Equals (storedCode);
+		}
+
+		private static String GetFirstAuthType()
+		{
+			return GetAuthType ("getFirstAuthType", "methodOne");
+		}
+
+		private static String GetSecondAuthType()
+		{
+			return GetAuthType ("getSecondAuthtype", "methodTwo");
+		}
+
+		private static String GetAuthType(String sp, String varName)
+		{
+			String returnValue = "";
+			String connectionString = "SERVER=localhost; DATABASE=MultiAuth; UID=root; PASSWORD=!!capstone2016heckyes!!; Allow User Variables=True";
+
+			using (var con2 = new MySqlConnection(connectionString)) { // dispose of connection when finished
+				con2.Open (); // open a connection
+				using (MySqlTransaction trans2 = con2.BeginTransaction()) {
+					try {
+
+						//command to execute query
+						using (MySqlCommand cmd = new MySqlCommand(sp, con2, trans2))
+						{
+							cmd.CommandType = CommandType.StoredProcedure;
+
+							cmd.Parameters.AddWithValue("paramUserName", username);
+							cmd.Parameters.AddWithValue("paramMacAddress", macAddress);
+
+							using (MySqlDataReader reader = cmd.ExecuteReader()) {
+								while(reader.Read()) {
+									returnValue = reader[varName].ToString();
+								}
+							}
+							cmd.Parameters.Clear(); // Clear params
+						}
+						trans2.Commit();
+					}
+					catch(Exception ex)
+					{
+						Console.WriteLine(ex.ToString());
+						trans2.Rollback();
+					}
+				}
+			}
+			return returnValue;
+		}
 	}
 }
