@@ -16,7 +16,7 @@ import org.json.JSONObject;
 public class SMSActivity extends AppCompatActivity {
     private String name;
     private String ip;
-    private String next_auth;
+    private String next_auth = "";
     private String json = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class SMSActivity extends AppCompatActivity {
                 name = extras.getString("name");
                 ip = extras.getString("ip");
                 next_auth = extras.getString("method2");
+                if(next_auth == null){ next_auth = "";}
                 json = extras.getString("JSON");
             }
         }
@@ -50,23 +51,26 @@ public class SMSActivity extends AppCompatActivity {
 
     public void submit(View view){
         EditText mEdit = (EditText)findViewById(R.id.sms);
-
+        Log.v("submitting sms", "start");
         JSONObject j;
         try {
+            Log.v("json", json);
             j = new JSONObject(json);
         }
         catch(JSONException e){
+            Log.e("json", e.toString());
             return;
         }
         JSONMessage m = new JSONMessage(j);
-        if(next_auth != null){
+        if(next_auth != ""){
             m.AddString("method1",  mEdit.getText().toString());
+            m.AddString("name", name);
         }
-        else{
+        else {
             m.AddString("method2", mEdit.getText().toString());
         }
-        m.AddString("name", name);
-        Intent intent;
+//        m.AddString("name", name);
+        Intent intent  =  new Intent(this, MessageSendActivity.class);
         switch(next_auth){
             case "face": intent = new Intent(this, FaceActivity.class);
                 break;
@@ -80,6 +84,7 @@ public class SMSActivity extends AppCompatActivity {
         }
 
         intent.putExtra("JSON", m.getStringContent());
+
         intent.putExtra("ip", ip);
         startActivity(intent);
 

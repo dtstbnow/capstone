@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
 import android.app.Activity;
 import android.widget.LinearLayout;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class VoiceActivity extends AppCompatActivity {
     boolean mStartPlaying = true;
     private String name;
     private String ip;
-    private String next_auth;
+    private String next_auth = "";
 
     Activity _this = this;
     private RecordButton mRecordButton = null;
@@ -85,29 +86,17 @@ public class VoiceActivity extends AppCompatActivity {
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        Log.v("fname", mFileName);
         mRecorder.setOutputFile(getFilesDir().toString() + mFileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
         try {
             mRecorder.prepare();
-            try {
-                Thread.sleep(500);
-            }
-            catch(InterruptedException e){
-
-            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
             Log.e(LOG_TAG, e.toString());
         }
 
-        try {
-            mRecorder.start();
-        } catch (Throwable t) {
-            t.printStackTrace();
-            Log.w(LOG_TAG, t);
-        }
+        mRecorder.start();
     }
 
     private void stopRecording() {
@@ -210,13 +199,14 @@ public class VoiceActivity extends AppCompatActivity {
                 }
                 else {
                     JSONMessage m = new JSONMessage(_this);
-                    if(next_auth != null){
+                    if(next_auth != ""){
                         m.AddFile("method1", f2);
+                        m.AddString("name", name);
                     }
                     else{
                         m.AddFile("method2", f2);
                     }
-                    m.AddString("name", name);
+//                    m.AddString("name", name);
                     Intent intent = new Intent(_this, MessageSendActivity.class);
                     switch(next_auth){
                         case "face": intent = new Intent(_this, FaceActivity.class);
@@ -285,6 +275,7 @@ public class VoiceActivity extends AppCompatActivity {
             name = extras.getString("name");
             ip = extras.getString("ip");
             next_auth = extras.getString("method2");
+            if(next_auth == null){ next_auth = "";}
             register = extras.getBoolean("register");
             if(register) {
                 json = extras.getString("JSON");

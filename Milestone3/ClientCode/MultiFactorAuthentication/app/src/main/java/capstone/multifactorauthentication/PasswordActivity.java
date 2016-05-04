@@ -17,7 +17,7 @@ public class PasswordActivity extends AppCompatActivity {
     private String name;
     private String ip;
     private Boolean register = false;
-    private String next_auth;
+    private String next_auth = "";
     private String json;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,8 @@ public class PasswordActivity extends AppCompatActivity {
                 ip = extras.getString("ip");
                 register = extras.getBoolean("register");
                 next_auth = extras.getString("method2");
+                if(next_auth == null){ next_auth = "";}
                 json = extras.getString("JSON");
-
             }
         }
 
@@ -61,19 +61,20 @@ public class PasswordActivity extends AppCompatActivity {
                 j = new JSONObject(json);
             }
             catch(JSONException e){
+                Log.e("json", e.toString());
                 return;
             }
             JSONMessage m = new JSONMessage(j);
-            m.AddString("verType", "Password");
-            if(next_auth != null){
+            if(next_auth != ""){
                 m.AddString("method1",  mEdit.getText().toString());
+                m.AddString("name", name);
             }
             else{
                 m.AddString("method2", mEdit.getText().toString());
             }
 
-            m.AddString("name", name);
-            Intent intent;
+//            m.AddString("name", name);
+            Intent intent =   new Intent(this, MessageSendActivity.class);
             switch(next_auth){
                 case "face": intent = new Intent(this, FaceActivity.class);
                     break;

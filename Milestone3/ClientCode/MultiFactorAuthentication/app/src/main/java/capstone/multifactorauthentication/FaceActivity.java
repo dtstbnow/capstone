@@ -35,8 +35,8 @@ public class FaceActivity extends AppCompatActivity{
         private String name;
         private String ip;
         private Boolean register = false;
-        private String json;
-        private String next_auth;
+        private String json = "";
+        private String next_auth = "";
 
         /** Create a file Uri for saving an image or video */
         private Uri getOutputMediaFileUri(String name){
@@ -103,6 +103,7 @@ public class FaceActivity extends AppCompatActivity{
                     register = extras.getBoolean("register");
                     json = extras.getString("JSON");
                     next_auth = extras.getString("method2");
+                    if(next_auth == null){ next_auth = "";}
 
                 }
             }
@@ -154,13 +155,14 @@ public class FaceActivity extends AppCompatActivity{
                     Log.v("path", fileUri.getPath());
                     res = "Success";
 //                return;
-                    if(next_auth != null) {
+                    if(next_auth != "") {
                         m.AddBmp("method1", b);
+                        m.AddString("name", name);
                     } else {
                         m.AddBmp("method2", b);
                     }
-                    m.AddString("name", name);
-                    Intent intent;
+//                    m.AddString("name", name);
+                    Intent intent  =  new Intent(this, MessageSendActivity.class);
                     switch(next_auth){
                         case "face": intent = new Intent(this, FaceActivity.class);
                             break;

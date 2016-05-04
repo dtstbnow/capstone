@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements HttpRequest.Reque
         }
 
         intent.putExtra("name", mEdit.getText().toString());
+        intent.putExtra("JSON", "{}");
         HttpRequest.init(getApplicationContext());
         HttpRequest.setRequestTimeout(20000);
         HttpRequest.setRequestRetries(4);
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements HttpRequest.Reque
         JSONMessage m = new JSONMessage(this);
         //Should send Decibel level, luminance, username, mac
         m.AddString("name", mEdit.getText().toString());
+
         mPostRequest = HttpRequest.post(this, ip.getText().toString() + "/Reserve", m.getContent());
 //            mPostRequest = HttpRequest.post(this, "http://camelot.memphis.edu:8080/Register", json);
 //        startActivity(intent);
@@ -163,7 +165,8 @@ public class MainActivity extends AppCompatActivity implements HttpRequest.Reque
         }
         else if (requestCode == mPostRequest){
             Log.v("res", result);
-            JSONObject j;
+            JSONMessage j;
+            JSONObject response;
             String method1;
             String method2;
             Intent intent;// = new Intent(this, VerificationActivity.class);
@@ -171,10 +174,12 @@ public class MainActivity extends AppCompatActivity implements HttpRequest.Reque
 
             EditText ip = (EditText)findViewById(R.id.ip);
             try{
-                j = new JSONObject(result);
+                response = new JSONObject(result);
+                j = new JSONMessage(response);
                 Log.v("json response", j.toString());
-                method1 = j.getString("MethodOne");
-                method2 = j.getString("MethodTwo");
+                method1 = response.getString("MethodOne");
+
+                method2 = response.getString("MethodTwo");
                 switch(method1){
                     case "face": intent = new Intent(this, FaceActivity.class);
                         break;
@@ -195,6 +200,8 @@ public class MainActivity extends AppCompatActivity implements HttpRequest.Reque
 
                 intent.putExtra("name", mEdit.getText().toString());
                 intent.putExtra("method2", method2);
+                Log.v("method2", method2);
+                intent.putExtra("JSON", "{}");
                 startActivity(intent);
 
             }

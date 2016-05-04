@@ -1,5 +1,8 @@
 package capstone.multifactorauthentication;
 
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -80,8 +83,18 @@ public class MessageSendActivity extends AppCompatActivity implements HttpReques
         Log.v("about to send", json.toString());
         if(register) {
             mPostRequest = HttpRequest.post(this, ip+"/Register", json);
+
 //            mPostRequest = HttpRequest.post(this, "http://camelot.memphis.edu:8080/Register", json);
         }else{
+            WifiManager manager = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+            WifiInfo info = manager.getConnectionInfo();
+            String address = info.getMacAddress();
+            try{
+
+                json.accumulate("macAdress", address);
+            }
+            catch(JSONException e){}
+            Log.v("Sent", json.toString());
             mPostRequest = HttpRequest.post(this, ip+"/Authenticate", json);
 
         }
