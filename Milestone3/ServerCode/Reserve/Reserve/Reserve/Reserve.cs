@@ -153,7 +153,7 @@ namespace Reserve
 			client.EnableSsl = true;
 			client.DeliveryMethod = SmtpDeliveryMethod.Network;
 			client.UseDefaultCredentials = false;
-			client.Credentials = new NetworkCredential ("umcapstone2016@gmail.com", "ackvfstmcodigqzu");
+			client.Credentials = new NetworkCredential ("umcapstone2016@gmail.com", "fhjeifmjerikdsmv");
 			client.Timeout = 2000000;
 			client.Send (msg);
 			msg.Dispose ();
